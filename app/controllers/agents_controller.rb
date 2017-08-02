@@ -2,6 +2,9 @@ class AgentsController < ApplicationController
   include DotHelper
   include ActionView::Helpers::TextHelper
   include SortableTable
+  require 'uri'
+  require 'net/http'
+  require 'base64'
 
   def index
     set_table_sort sorts: %w[name created_at last_check_at last_event_at last_receive_at], default: { created_at: :desc }
@@ -212,6 +215,43 @@ class AgentsController < ApplicationController
     current_user.undefined_agents.destroy_all
 
     redirect_back "All undefined Agents have been deleted."
+  end
+
+  def create_pin
+    @agent = current_user.agents.find(params[:id])
+    service_tocken = Service.find_by_user_id_and_provider(current_user.id, 'pinterest')
+    if service_tocken.present?
+      client = Pinterest::Client.new(service_tocken.token)
+      me = client.me.first.drop(1)
+      @user_name =  URI.parse(me[0].url).path[1..-2]
+
+      client_boards = client.get_boards
+      client_boards1 =  client_boards.first.drop(1)
+      client_boards2 = client_boards1.flatten!
+      @boards = []
+      client_boards2.each do |c|
+        @boards << c.name
+      end
+    else
+      redirect_to agents_path, notice: "Access token not provided."
+    end
+  end
+
+  def publish_pin
+    board =  params[:Boards].downcase
+    service_tocken = Service.find_by_user_id_and_provider(current_user.id, 'pinterest')
+    if service_tocken.present?
+      client = Pinterest::Client.new(service_tocken.token)
+      demo = client.create_pin({
+        board: params[:user_name] + "/" + board,
+        note: params[:note],
+        link: params[:link],
+        image_url: params[:image_url]
+      })
+      redirect_to agents_path, notice: "Publish pin successfully."
+    else 
+      redirect_to agents_path, notice: "Access token not provided."
+    end
   end
 
   protected

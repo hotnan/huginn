@@ -1,4 +1,11 @@
 <ul class="dropdown-menu" role="menu">
+  <% if agent.type == 'Agents::PinterestPublishAgent' %>
+    <!-- <li class="fa fa-pinterest">hi</li> -->
+    <li>
+      <%= link_to  icon_tag('glyphicon-pinterest', class: 'color-success') + ' Pin', create_pin_agent_path(agent), class: 'fa fa-pinterest' %>
+    </li>
+  <% end %>
+
   <% if agent.can_be_scheduled? %>
     <li>
       <%= link_to icon_tag('glyphicon-refresh', class: 'color-success') + ' Run', run_agent_path(agent, return: return_to), method: :post, tabindex: "-1" %>

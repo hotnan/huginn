@@ -6,6 +6,8 @@ Huginn::Application.routes.draw do
       put :leave_scenario
       delete :remove_events
       delete :memory, action: :destroy_memory
+      get :create_pin
+
     end
 
     collection do
@@ -16,6 +18,7 @@ Huginn::Application.routes.draw do
       post :validate
       post :complete
       delete :undefined, action: :destroy_undefined
+      post :publish_pin
     end
 
     resources :logs, :only => [:index] do
@@ -63,7 +66,7 @@ Huginn::Application.routes.draw do
     end
   end
 
-  resources :services, :only => [:index, :destroy] do
+  resources :services, :only => [:index, :destroy, :create] do
     member do
       post :toggle_availability
     end

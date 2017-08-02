@@ -56,6 +56,10 @@ gem 'twitter', github: 'sferik/twitter' # Must to be loaded before cantino-twitt
 gem 'twitter-stream', github: 'cantino/twitter-stream', branch: 'huginn'
 gem 'omniauth-twitter', '~> 1.3.0'
 
+# Pinterest Agent
+gem 'omniauth-pinterest'
+gem 'pinterest-api'
+
 # Tumblr Agents
 # until merge of https://github.com/tumblr/tumblr_client/pull/61
 gem 'tumblr_client', github: 'albertsun/tumblr_client', branch: 'master', ref: 'e046fe6e39291c173add0a49081630c7b60a36c7' 
@@ -127,6 +131,7 @@ gem 'spectrum-rails'
 gem 'therubyracer', '~> 0.12.3'
 gem 'typhoeus', '~> 0.6.3'
 gem 'uglifier', '~> 2.7.2'
+gem 'pg'
 
 group :development do
   gem 'better_errors', '~> 1.1'
@@ -196,7 +201,7 @@ ENV['DATABASE_ADAPTER'] ||=
   end
 
 if_true(ENV['DATABASE_ADAPTER'].strip == 'postgresql') do
-  gem 'pg', '~> 0.18.3'
+  # gem 'pg', '~> 0.18.3'
 end
 
 if_true(ENV['DATABASE_ADAPTER'].strip == 'mysql2') do

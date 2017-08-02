@@ -16,8 +16,21 @@
       <%- Devise.omniauth_providers.each { |provider| -%>
         <p><%= omniauth_button(provider) %></p>
       <%- } -%>
-      <hr>
+      <hr>  
+       OR 
+       <hr>
+      <%= form_for @service do |f| %>
+        <div class="form-group">
+          <%= f.label :access_tocken %>
+          <%= f.text_field :secret, :class => 'form-control' %>
+        </div>
 
+        <div class='form-actions' style='clear: both'>
+          <%= f.submit "Validate", :class => "btn btn-primary" %>
+        </div>
+      <% end %>
+
+      <hr>
       <div class='table-responsive'>
         <table class='table table-striped events'>
           <tr>
